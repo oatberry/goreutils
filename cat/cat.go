@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 )
 
@@ -23,34 +22,30 @@ func main() {
 }
 
 func catFiles(filenames []string) error {
+	bufStdout := bufio.NewWriter(os.Stdout)
 	for _, filename := range filenames {
-		file, err := ioutil.ReadFile(filename)
+		file, err := os.Open(filename)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "cat: %v\n", err)
 		}
 
-		_, err = os.Stdout.Write(file)
-		if err != nil {
-			return fmt.Errorf("writing stdout: %v", err)
-		}
+		bufStdout.ReadFrom(file)
 	}
 
+	bufStdout.Flush()
 	return nil
 }
 
 func readStdin() error {
-	reader := bufio.NewReader(os.Stdin)
+	bufStdin := bufio.NewReader(os.Stdin)
 	for {
-		line, err := reader.ReadSlice(byte('\n'))
+		line, err := bufStdin.ReadSlice(byte('\n'))
 		if err == io.EOF {
 			return nil
 		} else if err != nil {
 			return fmt.Errorf("reading stdin: %v", err)
 		}
 
-		_, err = os.Stdout.Write(line)
-		if err != nil {
-			return fmt.Errorf("writing stdout: %v", err)
-		}
+		os.Stdout.Write(line)
 	}
 }
