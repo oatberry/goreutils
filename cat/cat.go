@@ -22,7 +22,7 @@ func main() {
 }
 
 func catFiles(filenames []string) error {
-	bufStdout := bufio.NewWriter(os.Stdout)
+	bufStdout := bufio.NewWriterSize(os.Stdout, 128000) // GNU cat uses 128KB buffer
 	for _, filename := range filenames {
 		file, err := os.Open(filename)
 		if err != nil {
