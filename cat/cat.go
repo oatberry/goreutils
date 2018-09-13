@@ -28,6 +28,7 @@ func catFiles(filenames []string) error {
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "cat: %v\n", err)
 		}
+		defer file.Close()
 
 		bufStdout.ReadFrom(file)
 	}
