@@ -29,6 +29,12 @@ func main() {
 
 func parseArgs() config {
 	config := config{}
+
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %s [OPTION]... [FILE]...\n", os.Args[0])
+		flag.PrintDefaults()
+	}
+
 	flag.IntVar(&config.nLines, "n", 10, "number of lines to print")
 	flag.IntVar(&config.nBytes, "c", 0, "number of bytes to print")
 	flag.BoolVar(&config.verbose, "v", false, "print filename headers")
