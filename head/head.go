@@ -53,13 +53,14 @@ func head(config config) error {
 	for _, filename := range config.files {
 		bufStdout.Flush()
 
+		if config.headers {
+			fmt.Printf("==> %v <==\n", filename)
+		}
+
 		file, err := os.Open(filename)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "head: %v\n", err)
-		}
-
-		if config.headers {
-			fmt.Printf("==> %v <==\n", filename)
+			continue
 		}
 
 		if config.nBytes == 0 {
