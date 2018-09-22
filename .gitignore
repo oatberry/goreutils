@@ -15,5 +15,6 @@ cat/cat
 echo/echo
 false/false
 head/head
+seq/seq
 true/true
 yes/yes
